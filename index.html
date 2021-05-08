@@ -220,7 +220,7 @@
 
         txt_medicare = svg.append("text")
             .attr("class", "label")
-            .attr("x", 40)
+            .attr("x", 60)
             .attr("y", 325)
             .text("Medicare")
             .style("fill", "black")
@@ -270,8 +270,8 @@
                     .transition()
                     .duration(1000)
                     .ease(d3.easeLinear)
-                    .attr("x", 50)
-                    .attr("y", 90)
+                    .attr("x", 200)
+                    .attr("y", 95)
 
                 txt_medicare
                     .transition()
@@ -307,7 +307,7 @@
                     .transition()
                     .duration(1000)
                     .ease(d3.easeLinear)
-                    .attr("x", 40)
+                    .attr("x", 60)
                     .attr("y", 325)
             }
             console.log("new year state " + year_state);
