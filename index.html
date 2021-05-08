@@ -17,6 +17,10 @@
 
         h1 {
             margin: 0 auto;
+            color: #121212;
+            font-family: nyt-cheltenham,georgia,'times new roman',times,serif;
+            font-weight: 700;
+            font-style: italic;
         }
 
         .x .tick line {
@@ -49,6 +53,8 @@
         .label {
             font-size: 35px;
             font-weight: 200;
+            font-size: 20px;
+            font-family: "arial, helvetica, sans-serif";
         }
 
         .axis-label {
@@ -60,7 +66,17 @@
             max-width: 1000px;
             margin: 0 auto;
         }
+
+        .note {
+            max-width: 1000px;
+            font-family: "nyt-franklin", arial, helvetica, sans-serif;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 17px;
+            margin: 0 auto;
+        }
     </style>
+    <title>Healthcare by income (interactive)</title>
 </head>
 
 <body>
@@ -72,6 +88,8 @@
         <svg width="1050px" height="575px">
         </svg>
         <p class="source">Source: Current Population Survey, analysis by Matt Bruenig</p>
+        <p class="note">Replicated from: https://www.nytimes.com/2020/12/29/upshot/obamacare-recession-big-test.html</p>
+        <p class="note">By: By Margot Sanger-Katz, Sarah Kliff and Quoctrung Bui</p>
 
     </div>
 </body>
@@ -83,7 +101,7 @@
 
     let width = 800;
     let height = 500;
-    let margin = { top: 10, right: 10, bottom: 10, left: 30 };
+    let margin = { top: 10, right: 10, bottom: 10, left: 0 };
 
     let sel_cols = [
             "Medicaid",
@@ -120,6 +138,9 @@
         let series2020 = d3.stack().keys(sel_cols)(d2020);
         let d2009 = data.filter(d => d.year == 2009)
         let series2009 = d3.stack().keys(sel_cols)(d2009);
+        let head = d3.select('h1')
+        
+        head.text(`Healthcare by income in ${year_state}`)
 
         let color = d3.scaleOrdinal()
             .domain(sel_cols)
@@ -155,7 +176,7 @@
         let yAxisSettings = d3.axisLeft(y)
             .tickValues([.2, .4, .6, .8])
             .tickSize(6)
-            .tickPadding(4)
+            .tickPadding(1)
             .tickFormat(d3.format(".0%"))
 
         let yAxis = svg
@@ -177,25 +198,32 @@
             .attr("fill", d => color(d.key))
             .attr("d", area)
 
-        svg.append("text")
+        txt_emp = svg.append("text")
             .attr("class", "label")
             .attr("x", 500)
             .attr("y", 250)
             .text("Employer")
 
-        svg.append("text")
+        txt_medicaid = svg.append("text")
             .attr("class", "label")
-            .attr("x", 80)
-            .attr("y", 450)
+            .attr("x", 90)
+            .attr("y", 440)
             .text("Medicaid")
             .style("fill", "white")
 
-        svg.append("text")
+        txt_uninsured = svg.append("text")
+            .attr("class", "label")
+            .attr("x", 60)
+            .attr("y", 120)
+            .text("Uninsured")
+            .style("fill", "white")
+
+        txt_medicare = svg.append("text")
             .attr("class", "label")
             .attr("x", 40)
-            .attr("y", 300)
+            .attr("y", 325)
             .text("Medicare")
-            .style("fill", "white")
+            .style("fill", "black")
 
         svg.append("text")
             .attr("class", "axis-label")
@@ -225,12 +253,62 @@
             if (year_state == 2020) {
                 year_state = 2009
                 dance(series2020)
-                hed.html("U.S. Age Distribution, <span class='highlight'>In 2010</span>")
+                head.text(`Healthcare by income in ${year_state}`)
+
+                txt_emp
+                    .attr("x", 500)
+                    .attr("y", 250)
+
+                txt_medicaid
+                    .transition()
+                    .duration(1000)
+                    .ease(d3.easeLinear)
+                    .attr("x", 70)
+                    .attr("y", 405)
+                    
+                txt_uninsured
+                    .transition()
+                    .duration(1000)
+                    .ease(d3.easeLinear)
+                    .attr("x", 50)
+                    .attr("y", 90)
+
+                txt_medicare
+                    .transition()
+                    .duration(1000)
+                    .ease(d3.easeLinear)
+                    .attr("x", 40)
+                    .attr("y", 290)
 
             } else {
                 year_state = 2020
                 dance(series2009)
-                hed.html("U.S. Age Distribution, <span class='highlight'>In 2019</span>")
+                head.text(`Healthcare by income in ${year_state}`)
+                
+                txt_emp
+                    .attr("x", 500)
+                    .attr("y", 250)
+
+                txt_medicaid
+                    .transition()
+                    .duration(1000)
+                    .ease(d3.easeLinear)
+                    .attr("x", 90)
+                    .attr("y", 440)
+                    
+                txt_uninsured
+                    .transition()
+                    .duration(1000)
+                    .ease(d3.easeLinear)
+                    .attr("x", 60)
+                    .attr("y", 120)
+                
+                txt_medicare
+                    .transition()
+                    .duration(1000)
+                    .ease(d3.easeLinear)
+                    .attr("x", 40)
+                    .attr("y", 325)
             }
             console.log("new year state " + year_state);
         }
@@ -251,7 +329,7 @@
             .attr("d", area)
         }
 
-        var timer = d3.interval(update, 3000) //in milliseconds
+        var timer = d3.interval(update, 2000) //in milliseconds
     })
 
 </script>
