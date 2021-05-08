@@ -75,6 +75,12 @@
             line-height: 17px;
             margin: 0 auto;
         }
+
+        .legends {
+            font-family: "nyt-franklin", arial, helvetica, sans-serif;
+            font-size: 13px;
+            font-weight: 200;
+        }
     </style>
     <title>Healthcare by income (interactive)</title>
 </head>
@@ -101,7 +107,7 @@
 
     let width = 800;
     let height = 500;
-    let margin = { top: 10, right: 10, bottom: 10, left: 0 };
+    let margin = { top: 20, right: 10, bottom: 10, left: 0 };
 
     let sel_cols = [
             "Medicaid",
@@ -214,7 +220,7 @@
         txt_uninsured = svg.append("text")
             .attr("class", "label")
             .attr("x", 60)
-            .attr("y", 120)
+            .attr("y", 140)
             .text("Uninsured")
             .style("fill", "white")
 
@@ -246,6 +252,72 @@
             .text("lower income")
             .attr("text-anchor", "start")
 
+        // Add other legend
+        svg.append("text")
+            .attr("class", "legends")
+            .text("Medicare and Medicaid")
+            .attr("x", 350)
+            .attr("y", 15)
+
+        svg.append("text")
+            .attr("class", "legends")
+            .text("Subsidized Exchange")
+            .attr("x", 505)
+            .attr("y", 15)
+
+        svg.append("text")
+            .attr("class", "legends")
+            .text("CHIP")
+            .attr("x", 650)
+            .attr("y", 15)
+
+        svg.append("text")
+            .attr("class", "legends")
+            .text("Military")
+            .attr("x", 700)
+            .attr("y", 15)
+
+        svg.append("text")
+            .attr("class", "legends")
+            .text("Other")
+            .attr("x", 760)
+            .attr("y", 15)
+
+        svg.append('rect')
+            .attr('x', 749)
+            .attr('y', 5)
+            .attr('width', 10)
+            .attr('height', 10)
+            .attr('fill', 'rgb(224, 224, 224)');
+
+        svg.append('rect')
+            .attr('x', 689)
+            .attr('y', 5)
+            .attr('width', 10)
+            .attr('height', 10)
+            .attr('fill', 'rgb(144, 164, 174)');
+
+        svg.append('rect')
+            .attr('x', 639)
+            .attr('y', 5)
+            .attr('width', 10)
+            .attr('height', 10)
+            .attr('fill', 'rgb(92, 107, 192)');
+
+        svg.append('rect')
+            .attr('x', 494)
+            .attr('y', 5)
+            .attr('width', 10)
+            .attr('height', 10)
+            .attr('fill', 'rgb(240, 98, 146)');
+
+        svg.append('rect')
+            .attr('x', 338)
+            .attr('y', 5)
+            .attr('width', 10)
+            .attr('height', 10)
+            .attr('fill', 'rgb(253, 216, 53)');
+
         function update() {
             console.log("update")
             console.log("old year state " + year_state);
@@ -255,9 +327,12 @@
                 dance(series2020)
                 head.text(`Healthcare by income in ${year_state}`)
 
-                txt_emp
-                    .attr("x", 500)
-                    .attr("y", 250)
+                txt_emp                
+                    .transition()
+                    .duration(1000)
+                    .ease(d3.easeLinear)
+                    .attr("x", 510)
+                    .attr("y", 240)
 
                 txt_medicaid
                     .transition()
@@ -271,7 +346,7 @@
                     .duration(1000)
                     .ease(d3.easeLinear)
                     .attr("x", 200)
-                    .attr("y", 95)
+                    .attr("y", 105)
 
                 txt_medicare
                     .transition()
@@ -285,7 +360,10 @@
                 dance(series2009)
                 head.text(`Healthcare by income in ${year_state}`)
                 
-                txt_emp
+                txt_emp                
+                    .transition()
+                    .duration(1000)
+                    .ease(d3.easeLinear)
                     .attr("x", 500)
                     .attr("y", 250)
 
@@ -301,7 +379,7 @@
                     .duration(1000)
                     .ease(d3.easeLinear)
                     .attr("x", 60)
-                    .attr("y", 120)
+                    .attr("y", 140)
                 
                 txt_medicare
                     .transition()
